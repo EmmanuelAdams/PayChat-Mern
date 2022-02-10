@@ -1,6 +1,5 @@
 import './sidebar.css';
-import { Users } from '../../dummyData';
-import Online from '../online/Online';
+import ChatOnline from '../chatOnline/ChatOnline';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -59,9 +58,7 @@ function Sidebar({ user }) {
         </div>
         <h4 className="sidebarTitle">Online Friends</h4>
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <Online key={u.id} user={u} />
-          ))}
+          <ChatOnline />
         </ul>
       </>
     );
