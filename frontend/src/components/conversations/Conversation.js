@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './conversation.css';
 
 export default function Conversation({
   conversation,
   currentUser,
 }) {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
@@ -29,17 +30,19 @@ export default function Conversation({
 
   return (
     <div className="conversation">
-      <img
-        className="conversationImg"
-        src={
-          user.profilePicture
-            ? PF + user.profilePicture
-            : PF + '/person/noAvatar.png'
-        }
-        alt=""
-      />
+      <Link to={`/profile/${user?.username}`}>
+        <img
+          className="conversationImg"
+          src={
+            user?.profilePicture
+              ? PF + user.profilePicture
+              : PF + '/person/noAvatar.png'
+          }
+          alt=""
+        />
+      </Link>
       <span className="conversationName">
-        {user.username}
+        {user?.username}
       </span>
     </div>
   );

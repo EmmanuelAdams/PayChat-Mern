@@ -18,11 +18,7 @@ router.get('/:conversationId', async (req, res) => {
   try {
     const messages = await Message.find({
       conversationId: req.params.conversationId,
-    }).populate({
-      path: 'sender',
-      select: 'profilePicture username',
     });
-    // console.log('messages => ', messages);
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);

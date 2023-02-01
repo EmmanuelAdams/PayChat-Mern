@@ -76,6 +76,10 @@
   cursor: pointer;
 }
 
+.topbarImg:hover {
+  border: 3px solid rgb(28, 28, 55);
+}
+
 .topbarImgText {
   display: flex;
   justify-content: center;

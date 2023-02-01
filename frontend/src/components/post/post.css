@@ -16,6 +16,10 @@
   justify-content: space-between;
 }
 
+.postTopRight {
+  cursor: pointer;
+}
+
 .postTopLeft {
   display: flex;
   align-items: center;
@@ -27,6 +31,10 @@
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
+}
+
+.postProfileImg:hover {
+  border: 3px solid rgb(28, 28, 55);
 }
 
 .postUsername {

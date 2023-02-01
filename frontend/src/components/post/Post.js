@@ -54,12 +54,14 @@ function Post({ post }) {
     }
   };
 
+  const pathname = window.location.pathname;
+
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <Link to={`profile/${user.username}`}>
+            {pathname === `/profile/${user.username}` ? (
               <img
                 className="postProfileImg"
                 src={
@@ -69,7 +71,19 @@ function Post({ post }) {
                 }
                 alt=""
               />
-            </Link>
+            ) : (
+              <Link to={`profile/${user.username}`}>
+                <img
+                  className="postProfileImg"
+                  src={
+                    user.profilePicture
+                      ? PF + user.profilePicture
+                      : PF + 'person/noAvatar.png'
+                  }
+                  alt=""
+                />
+              </Link>
+            )}
 
             <span className="postUsername">
               {user.username}
@@ -79,7 +93,12 @@ function Post({ post }) {
             </span>
           </div>
           <div className="postTopRight">
-            <Delete onClick={deletePost} />
+            {user._id === currentUser._id ? (
+              <Delete onClick={deletePost} />
+            ) : (
+              ''
+            )}
+
             <MoreVert />
           </div>
         </div>

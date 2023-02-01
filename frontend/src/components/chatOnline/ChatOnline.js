@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './chatOnline.css';
 
 export default function ChatOnline({
@@ -28,16 +29,16 @@ export default function ChatOnline({
     );
   }, [friends, onlineUsers]);
 
-  const handleClick = async (user) => {
-    try {
-      const res = await axios.get(
-        `/conversations/find/${currentId}/${user._id}`
-      );
-      setCurrentChat(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleClick = async (user) => {
+  //   try {
+  //     const res = await axios.get(
+  //       `/conversations/find/${currentId}/${user._id}`
+  //     );
+  //     setCurrentChat(res.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="chatOnline">
@@ -45,17 +46,20 @@ export default function ChatOnline({
         <div
           key={Math}
           className="chatOnlineFriend"
-          onClick={() => handleClick(o)}>
+          // onClick={() => handleClick(o)}
+        >
           <div className="chatOnlineImgContainer">
-            <img
-              className="chatOnlineImg"
-              src={
-                o?.profilePicture
-                  ? PF + o.profilePicture
-                  : PF + 'person/noAvatar.png'
-              }
-              alt=""
-            />
+            <Link to={`/profile/${o.username}`}>
+              <img
+                className="chatOnlineImg"
+                src={
+                  o?.profilePicture
+                    ? PF + o.profilePicture
+                    : PF + 'person/noAvatar.png'
+                }
+                alt=""
+              />
+            </Link>
             <div className="chatOnlineBadge"></div>
           </div>
           <span className="chatOnlineName">

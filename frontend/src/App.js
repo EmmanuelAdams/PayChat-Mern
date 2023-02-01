@@ -21,20 +21,25 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Container className="container">
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                user ? <Home /> : <Register />
-              }></Route>
-            <Route
-              path="/profile/:username"
-              element={<Profile />}></Route>
-          </Routes>
-        </Container>
+        <div className="new">
+          <Container>
+            <div className="container">
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={
+                    user ? <Home /> : <Register />
+                  }></Route>
+                <Route
+                  path="/profile/:username"
+                  element={<Profile />}></Route>
+              </Routes>
+            </div>
+          </Container>
+        </div>
       </div>
+
       <Routes>
         <Route
           path="/login"

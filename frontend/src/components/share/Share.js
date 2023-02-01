@@ -122,7 +122,7 @@ function Share() {
           </div>
           <button className="shareOption" type="submit">
             <Reply className="replyIcon" />
-            <span className="shareOptionText">Share</span>
+            <span className="shareOptionText">Post</span>
           </button>
         </form>
       </div>

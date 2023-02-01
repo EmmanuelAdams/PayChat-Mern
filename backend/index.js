@@ -26,6 +26,9 @@ const connection = async () => {
     console.log(error);
   }
 };
+mongoose.set({
+  strictQuery: true,
+});
 
 app.use(
   '/images',
@@ -46,7 +49,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 app.post(
   '/api/upload',
   upload.single('file'),
