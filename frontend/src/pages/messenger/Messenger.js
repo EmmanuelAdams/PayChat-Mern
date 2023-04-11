@@ -157,6 +157,9 @@ export default function Messenger() {
                     onChange={(e) =>
                       setNewMessage(e.target.value)
                     }
+                    onKeyDown={(e) =>
+                      e.key === 'Enter' && handleSubmit(e)
+                    }
                     value={newMessage}></textarea>
                   <button
                     className="chatSubmitButton"

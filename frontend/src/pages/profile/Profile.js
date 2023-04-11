@@ -97,6 +97,7 @@ function Profile() {
                   accept=".png,.jpg,.jpeg"
                   onChange={handleProfilePictureUpload}
                   style={{ display: 'none' }}
+                  disabled={user._id !== contextUser._id}
                 />
               </div>
             </div>

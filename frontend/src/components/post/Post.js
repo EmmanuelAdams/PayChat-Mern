@@ -24,7 +24,10 @@ function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users/${post.userId}`);
+      const res = await axios.get(`/users/${post.userId}`, {
+        cache: 'stale-while-revalidate',
+      });
+
       setUser(res.data);
     };
 
@@ -52,14 +55,12 @@ function Post({ post }) {
     }
   };
 
-  const pathname = window.location.pathname;
-
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            {pathname === `/profile/${user.username}` ? (
+            {user._id === currentUser._id ? (
               <img
                 className="postProfileImg"
                 src={

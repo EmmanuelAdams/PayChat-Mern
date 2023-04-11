@@ -34,10 +34,6 @@ function App() {
                 <Route
                   path="/profile/:username"
                   element={<Profile />}></Route>
-                <Route
-                  path="*"
-                  element={<Navigate to="/" />}
-                />
               </Routes>
             </div>
           </Container>
