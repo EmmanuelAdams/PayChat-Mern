@@ -19,7 +19,7 @@ function Sidebar({ user }) {
     const getFriends = async () => {
       try {
         const friendList = await axios.get(
-          '/users/friends/' + user._id
+          `/users/friends/${user?._id}`
         );
         setFriends(friendList.data);
       } catch (err) {

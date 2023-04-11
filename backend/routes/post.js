@@ -1,103 +1,99 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const Post = require('../models/Post');
 const User = require('../models/User');
 
-//create a post
-
-router.post('/', async (req, res) => {
-  const newPost = new Post(req.body);
+// Create a post
+router.post('/', async (req, res, next) => {
   try {
+    const newPost = new Post(req.body);
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
-//update a post
 
-router.put('/:id', async (req, res) => {
+// Update a post
+router.put('/:id', async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId) {
-      await post.updateOne({ $set: req.body });
-      res.status(200).json('the post has been updated');
+      await post.updateOne(req.body);
+      res.status(200).json('The post has been updated');
     } else {
-      res.status(403).json('you can update only your post');
+      res.status(403).json('You can update only your post');
     }
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
-//delete a post
 
-router.delete('/:id', async (req, res) => {
+// Delete a post
+router.delete('/:id', async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId) {
       await post.delete();
-      res.status(200).json('the post has been deleted');
+      res.status(200).json('The post has been deleted');
     } else {
-      res.status(403).json('you can delete only your post');
+      res.status(403).json('You can delete only your post');
     }
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
-//like / dislike a post
 
-router.put('/:id/like', async (req, res) => {
+// Like / Dislike a post
+router.put('/:id/like', async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.userId)) {
-      await post.updateOne({
-        $push: { likes: req.body.userId },
-      });
-      res.status(200).json('The post has been liked');
+    const isLiked = post.likes.includes(req.body.userId);
+    const update = isLiked
+      ? { $pull: { likes: req.body.userId } }
+      : { $push: { likes: req.body.userId } };
+    await post.updateOne(update);
+    const message = isLiked
+      ? 'The post has been disliked'
+      : 'The post has been liked';
+    res.status(200).json(message);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Get a post
+router.get('/:id', async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.query.userId);
+    if (post) {
+      res.status(200).json(post);
     } else {
-      await post.updateOne({
-        $pull: { likes: req.body.userId },
-      });
-      res.status(200).json('The post has been disliked');
+      res.status(404).json('Post not found');
     }
   } catch (err) {
-    res.status(500).json(err);
-  }
-});
-//get a post
-
-router.get('/:id', async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
 
-//get timeline posts
-
-router.get('/timeline/:userId', async (req, res) => {
+// Get timeline posts
+router.get('/timeline/:userId', async (req, res, next) => {
   try {
     const currentUser = await User.findById(
       req.params.userId
     );
-    const userPosts = await Post.find({
-      userId: currentUser._id,
+    const friendIds = currentUser.followings;
+    const posts = await Post.find({
+      userId: { $in: [currentUser._id, ...friendIds] },
     });
-    const friendPosts = await Promise.all(
-      currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
-      })
-    );
-    res.status(200).json(userPosts.concat(...friendPosts));
+    res.status(200).json(posts);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
 
-//get user's all posts
-
-router.get('/profile/:username', async (req, res) => {
+// Get user's all posts
+router.get('/profile/:username', async (req, res, next) => {
   try {
     const user = await User.findOne({
       username: req.params.username,
@@ -105,7 +101,7 @@ router.get('/profile/:username', async (req, res) => {
     const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
   } catch (err) {
-    res.status(500).json(err);
+    next(err);
   }
 });
 

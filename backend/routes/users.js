@@ -1,37 +1,45 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 
 // Update user
-router.put('/:id', async (req, res) => {
-  if (
-    req.body.userId === req.params.id ||
-    req.body.isAdmin
-  ) {
+router.put('/:id/update', async (req, res) => {
+  // const currentUserID = req.query.userId;
+  const requestedUserID = req.params.id;
+
+  // if (currentUserID !== requestedUserID) {
+  //   return res
+  //     .status(401)
+  //     .json(
+  //       'You are not authorized to update this account!'
+  //     );
+  // }
+
+  try {
+    const user = await User.findById(requestedUserID);
+
+    if (!user) {
+      return res.status(404).json('User not found!');
+    }
+
     if (req.body.password) {
-      try {
-        const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(
-          req.body.password,
-          salt
-        );
-      } catch (error) {
-        return res.status(500).json(error);
-      }
-    }
-    try {
-      const user = await User.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body }
+      const salt = await bcrypt.genSalt(10);
+      req.body.password = await bcrypt.hash(
+        req.body.password,
+        salt
       );
-      res.status(200).json('Account updated successfully');
-    } catch (error) {
-      return res.status(500).json(error);
     }
-  } else {
-    return res
-      .status(401)
-      .json('You can only update your account!');
+
+    const updatedUser = await User.findByIdAndUpdate(
+      requestedUserID,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json('Account updated successfully');
+  } catch (error) {
+    return res.status(500).json(error);
   }
 });
 
@@ -56,15 +64,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Get a user
+// Get a user by ID
+router.get('/:id', async (req, res) => {
+  const userId = req.query.userId || req.params.id;
+
+  try {
+    const user = await User.findById(userId);
+    const { password, updatedAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// Get a user by username
 router.get('/', async (req, res) => {
-  const userId = req.query.userId;
   const username = req.query.username;
 
   try {
-    const user = userId
-      ? await User.findById(userId)
-      : await User.findOne({ username: username });
+    const user = await User.findOne({ username: username });
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (error) {
@@ -146,5 +164,44 @@ router.put('/:id/unfollow', async (req, res) => {
     res.status(403).json('You cant unfollow yourself');
   }
 });
+
+// upload user image
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+router.put(
+  '/:id/profilePicture',
+  upload.single('profilePicture'),
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ error: 'User not found' });
+      }
+
+      user.profilePicture = req.file.filename;
+      await user.save();
+
+      return res.status(200).json({ success: true });
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .json({ error: 'Internal server error' });
+    }
+  }
+);
 
 module.exports = router;

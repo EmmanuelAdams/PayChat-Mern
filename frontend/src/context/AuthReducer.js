@@ -23,8 +23,8 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          followings: [
-            ...state.user.followings,
+          following: [
+            ...state.user.following,
             action.payload,
           ],
         },
@@ -34,10 +34,15 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          followings: state.user.followings.filter(
-            (following) => following !== action.payload
+          following: state.user.following.filter(
+            (userId) => userId !== action.payload
           ),
         },
+      };
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

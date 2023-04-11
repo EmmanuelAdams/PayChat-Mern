@@ -65,10 +65,10 @@
 .sidebarFollowings {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 .sidebarFollowing {
   display: flex;
+  padding: 5px;
   flex-direction: column;
   margin-bottom: 20px;
   cursor: pointer;

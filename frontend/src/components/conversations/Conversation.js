@@ -7,43 +7,56 @@ export default function Conversation({
   conversation,
   currentUser,
 }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    username: '',
+    profilePicture: '',
+  });
+  const [friendId, setFriendId] = useState(null);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
-    const friendId = conversation.members.find(
-      (member) => member !== currentUser._id
-    );
+    if (conversation) {
+      const newFriendId = conversation.members.find(
+        (member) => member !== currentUser._id
+      );
+      setFriendId(newFriendId);
+    }
+  }, [conversation, currentUser]);
 
+  useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios(
-          '/users?userId=' + friendId
-        );
+        const res = await axios(`/users/${friendId}`);
         setUser(res.data);
       } catch (error) {
         console.log(error);
       }
     };
-    getUser();
-  }, [currentUser, conversation]);
+    if (friendId) {
+      getUser();
+    }
+  }, [friendId]);
 
   return (
     <div className="conversation">
-      <Link to={`/profile/${user?.username}`}>
-        <img
-          className="conversationImg"
-          src={
-            user?.profilePicture
-              ? PF + user.profilePicture
-              : PF + '/person/noAvatar.png'
-          }
-          alt=""
-        />
-      </Link>
-      <span className="conversationName">
-        {user?.username}
-      </span>
+      {user && (
+        <>
+          <Link to={`/profile/${user.username}`}>
+            <img
+              className="conversationImg"
+              src={
+                user.profilePicture
+                  ? PF + user.profilePicture
+                  : PF + '/person/noAvatar.png'
+              }
+              alt=""
+            />
+          </Link>
+          <span className="conversationName">
+            {user.username}
+          </span>
+        </>
+      )}
     </div>
   );
 }

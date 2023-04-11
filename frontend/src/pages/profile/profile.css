@@ -30,6 +30,11 @@
   border: 3px solid white;
 }
 
+.profileUserImg:hover {
+  cursor: pointer;
+  border: 3px solid rgb(28, 28, 55);
+}
+
 .profileInfo {
   display: flex;
   flex-direction: column;

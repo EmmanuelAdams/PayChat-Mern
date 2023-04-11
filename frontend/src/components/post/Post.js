@@ -24,9 +24,7 @@ function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
-        `/users?userId=${post.userId}`
-      );
+      const res = await axios.get(`/users/${post.userId}`);
       setUser(res.data);
     };
 
@@ -65,8 +63,8 @@ function Post({ post }) {
               <img
                 className="postProfileImg"
                 src={
-                  user.profilePicture
-                    ? PF + user.profilePicture
+                  currentUser.profilePicture
+                    ? PF + currentUser.profilePicture
                     : PF + 'person/noAvatar.png'
                 }
                 alt=""

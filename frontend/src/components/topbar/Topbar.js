@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 function Topbar() {
-  const { user } = useContext(AuthContext);
+  const { user: currentUser } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
@@ -21,6 +21,7 @@ function Topbar() {
           <img
             src="../../assets/logo/icon.png"
             alt="logo"
+            title="Home"
             className="logo"
           />
         </Link>
@@ -38,40 +39,50 @@ function Topbar() {
 
       <div className="topbarRight">
         <div className="topbarImgText">
-          <Link to={`/profile/${user.username}`}>
+          <Link to={`/profile/${currentUser.username}`}>
             <img
               src={
-                user.profilePicture
-                  ? PF + user.profilePicture
+                currentUser.profilePicture
+                  ? PF + currentUser.profilePicture
                   : PF + 'person/noAvatar.png'
               }
+              title="Profile"
               alt="profile"
               className="topbarImg"
             />
           </Link>
 
-          <h4>{user.username}</h4>
+          <h4>{currentUser.username}</h4>
         </div>
 
         <div className="topbarIcons">
           <Link to={'/messenger'}>
             <IconButton className="iconButton">
               <div className="topbarIconItem">
-                <Chat className="icon" />
+                <Chat
+                  className="icon"
+                  titleAccess="Messenger"
+                />
                 <span className="topbarIconBadge">1</span>
               </div>
             </IconButton>
           </Link>
           <IconButton className="iconButton">
             <div className="topbarIconItem">
-              <Notifications className="icon" />
+              <Notifications
+                className="icon"
+                titleAccess="Notifications"
+              />
               <span className="topbarIconBadge">2</span>
             </div>
           </IconButton>
           <Link to={'/settings'}>
             <IconButton className="iconButton">
               <div className="topbarIconItem">
-                <Settings className="icon" />
+                <Settings
+                  className="icon"
+                  titleAccess="Settings"
+                />
               </div>
             </IconButton>
           </Link>
