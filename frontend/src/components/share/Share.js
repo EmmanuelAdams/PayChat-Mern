@@ -19,6 +19,9 @@ function Share() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!desc.current.value && !file) {
+      return;
+    }
     const newPost = {
       userId: user._id,
       desc: desc.current.value,

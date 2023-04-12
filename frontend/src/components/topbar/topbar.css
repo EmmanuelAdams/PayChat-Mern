@@ -40,12 +40,47 @@
   margin-left: 5px;
   margin-right: 10px;
 }
+
 .searchInput {
   border: none;
   background-color: transparent;
   outline-width: 0;
   width: 100%;
   font-size: medium;
+}
+
+.searchResults {
+  position: absolute;
+  top: 60px;
+  width: 400px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.searchResultItem:hover {
+  background-color: #f0f0f0;
+}
+
+.searchResultImg {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.searchResultUsername {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .topbarRight {

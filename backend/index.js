@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const userRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
 const postRoute = require('./routes/post');
+const searchRoute = require('./routes/search');
 const conversationRoute = require('./routes/conversations');
 const messageRoute = require('./routes/messages');
 const multer = require('multer');
@@ -116,6 +117,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/posts', postRoute);
 app.use('/api/conversations', conversationRoute);
 app.use('/api/messages', messageRoute);
+app.use('/api/search', searchRoute);
 
 // Start the server
 const PORT = process.env.PORT || 8800;

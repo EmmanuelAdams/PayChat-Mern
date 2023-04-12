@@ -3,11 +3,15 @@
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  margin-top: 10px;
+  border-bottom: 1px solid rgb(239, 239, 239);
 }
 
-.conversation #separator:hover {
-  background-color: rgb(245, 243, 243);
+.conversation.selected {
+  background-color: rgb(219, 219, 219);
+}
+
+.conversationWrapper :hover {
+  background-color: rgb(239, 239, 239);
 }
 
 .conversationImg {

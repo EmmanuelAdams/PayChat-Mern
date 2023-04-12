@@ -7,12 +7,47 @@ import {
 } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import './topbar.css';
-import { useContext } from 'react';
+import {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import axios from 'axios';
 
 function Topbar() {
   const { user: currentUser } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const searchRef = useRef();
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `search/users?query=${searchQuery}`
+      );
+      setSearchResults(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(e.target)
+      ) {
+        setSearchResults([]);
+      }
+    };
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
   return (
     <div className="topbarContainer">
@@ -28,13 +63,48 @@ function Topbar() {
       </div>
 
       <div className="topbarCenter">
-        <div className="searchbar">
+        <div className="searchbar" ref={searchRef}>
           <Search className="searchIcon" />
           <input
             placeholder="Search PayChat..."
             className="searchInput"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
           />
         </div>
+        {searchResults.length > 0 && (
+          <div className="searchResults" ref={searchRef}>
+            {searchResults.map((user) => (
+              <Link
+                to={`/profile/${user.username}`}
+                key={user._id}
+                onClick={() => setSearchResults([])}
+                style={{ textDecoration: 'none' }}>
+                <div className="searchResultItem">
+                  <img
+                    src={
+                      user.profilePicture
+                        ? PF + user.profilePicture
+                        : PF + 'person/noAvatar.png'
+                    }
+                    alt="profile"
+                    className="searchResultImg"
+                  />
+                  <span
+                    className="searchResultUsername"
+                    style={{ color: 'black' }}>
+                    {user.username}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="topbarRight">

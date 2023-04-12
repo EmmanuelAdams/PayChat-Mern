@@ -25,4 +25,23 @@ router.get('/:conversationId', async (req, res) => {
   }
 });
 
+router.delete('/:messageId', async (req, res) => {
+  try {
+    const deletedMessage = await Message.findByIdAndDelete(
+      req.params.messageId
+    );
+    if (!deletedMessage) {
+      res
+        .status(404)
+        .json({ message: 'Message not found' });
+    } else {
+      res
+        .status(200)
+        .json({ message: 'Message deleted successfully' });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;

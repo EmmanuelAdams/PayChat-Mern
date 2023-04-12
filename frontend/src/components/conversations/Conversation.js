@@ -6,6 +6,7 @@ import './conversation.css';
 export default function Conversation({
   conversation,
   currentUser,
+  selected,
 }) {
   const [user, setUser] = useState({
     username: '',
@@ -38,25 +39,30 @@ export default function Conversation({
   }, [friendId]);
 
   return (
-    <div className="conversation">
-      {user && (
-        <>
-          <Link to={`/profile/${user.username}`}>
-            <img
-              className="conversationImg"
-              src={
-                user.profilePicture
-                  ? PF + user.profilePicture
-                  : PF + '/person/noAvatar.png'
-              }
-              alt=""
-            />
-          </Link>
-          <span className="conversationName">
-            {user.username}
-          </span>
-        </>
-      )}
+    <div className="conversationWrapper">
+      <div
+        className={`conversation ${
+          selected ? 'selected' : ''
+        }`}>
+        {user && (
+          <>
+            <Link to={`/profile/${user.username}`}>
+              <img
+                className="conversationImg"
+                src={
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + '/person/noAvatar.png'
+                }
+                alt=""
+              />
+            </Link>
+            <span className="conversationName">
+              {user.username}
+            </span>
+          </>
+        )}
+      </div>
     </div>
   );
 }

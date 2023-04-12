@@ -21,13 +21,15 @@ export default function Messenger() {
   const [arrivalMessage, setArrivalMessage] =
     useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const socket = useRef();
+  const socketRef = useRef();
+  const [selectedConversation, setSelectedConversation] =
+    useState(null);
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io('ws://localhost:8900');
-    socket.current.on('getMessage', (data) => {
+    socketRef.current = io('ws://localhost:8900');
+    socketRef.current.on('getMessage', (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
@@ -45,8 +47,8 @@ export default function Messenger() {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit('addUser', user._id);
-    socket.current.on('getUsers', (users) => {
+    socketRef.current.emit('addUser', user._id);
+    socketRef.current.on('getUsers', (users) => {
       setOnlineUsers(
         user.followings.filter((f) =>
           users.some((u) => u.userId === f)
@@ -59,7 +61,7 @@ export default function Messenger() {
     const getConversations = async () => {
       try {
         const res = await axios.get(
-          '/conversations/' + user._id
+          `/conversations/${user._id}`
         );
         setConversations(res.data);
       } catch (err) {
@@ -73,7 +75,7 @@ export default function Messenger() {
     const getMessages = async () => {
       try {
         const res = await axios.get(
-          '/messages/' + currentChat?._id
+          `/messages/${currentChat?._id}`
         );
         setMessages(res.data);
       } catch (err) {
@@ -95,7 +97,7 @@ export default function Messenger() {
       (member) => member !== user._id
     );
 
-    socket.current.emit('sendMessage', {
+    socketRef.current.emit('sendMessage', {
       senderId: user._id,
       receiverId,
       text: newMessage,
@@ -108,6 +110,14 @@ export default function Messenger() {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const deleteMessage = (messageId) => {
+    setMessages((prevMessages) =>
+      prevMessages.filter(
+        (message) => message._id !== messageId
+      )
+    );
   };
 
   useEffect(() => {
@@ -127,10 +137,15 @@ export default function Messenger() {
               className="chatMenuInput"
             />
             {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
+              <div
+                onClick={() => {
+                  setCurrentChat(c);
+                  setSelectedConversation(c._id);
+                }}>
                 <Conversation
                   conversation={c}
                   currentUser={user}
+                  selected={selectedConversation === c._id}
                 />
               </div>
             ))}
@@ -144,8 +159,10 @@ export default function Messenger() {
                   {messages.map((m) => (
                     <div ref={scrollRef}>
                       <Message
+                        key={m._id}
                         message={m}
                         own={m.sender === user._id}
+                        deleteMessage={deleteMessage}
                       />
                     </div>
                   ))}
@@ -157,10 +174,16 @@ export default function Messenger() {
                     onChange={(e) =>
                       setNewMessage(e.target.value)
                     }
-                    onKeyDown={(e) =>
-                      e.key === 'Enter' && handleSubmit(e)
-                    }
-                    value={newMessage}></textarea>
+                    value={newMessage}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === 'Enter' &&
+                        !e.shiftKey
+                      ) {
+                        e.preventDefault();
+                        handleSubmit(e);
+                      }
+                    }}></textarea>
                   <button
                     className="chatSubmitButton"
                     onClick={handleSubmit}>

@@ -71,7 +71,13 @@ function Post({ post }) {
                 alt=""
               />
             ) : (
-              <Link to={`profile/${user.username}`}>
+              <Link
+                to={
+                  window.location.pathname ===
+                  `/profile/${user.username}`
+                    ? ''
+                    : `/profile/${user.username}`
+                }>
                 <img
                   className="postProfileImg"
                   src={
