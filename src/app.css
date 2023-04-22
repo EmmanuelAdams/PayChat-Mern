@@ -1,0 +1,12 @@
+.app {
+  background-color: rgb(226, 226, 226);
+}
+
+* {
+  font-family: -apple-system, 'San Francisco',
+    'Helvetica Neue', sans-serif;
+}
+
+.container {
+  background-color: #fff;
+}
