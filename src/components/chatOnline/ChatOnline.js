@@ -24,9 +24,13 @@ export default function ChatOnline({
   }, [currentId]);
 
   useEffect(() => {
-    setOnlineFriends(
-      friends.filter((f) => onlineUsers.includes(f._id))
-    );
+    if (Array.isArray(friends)) {
+      setOnlineFriends(
+        friends.filter((f) => onlineUsers.includes(f._id))
+      );
+    } else {
+      console.error('Invalid friends data:', friends);
+    }
   }, [friends, onlineUsers]);
 
   // const handleClick = async (user) => {
