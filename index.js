@@ -3,7 +3,7 @@ const PORT = process.env.PORT || 8900;
 const io = require('socket.io')(PORT, {
   cors: {
     origin: [
-      'https://paychat-app.netlify.app/',
+      'https://paychat-app.netlify.app',
       'http://localhost:3000',
     ],
   },
