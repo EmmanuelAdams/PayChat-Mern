@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../apiConfig';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './conversation.css';
@@ -27,7 +27,7 @@ export default function Conversation({
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios(`/users/${friendId}`);
+        const res = await api(`/users/${friendId}`);
         setUser(res.data);
       } catch (error) {
         console.log(error);

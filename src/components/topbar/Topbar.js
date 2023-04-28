@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
+import api from '../../apiConfig';
 
 function Topbar() {
   const { user: currentUser } = useContext(AuthContext);
@@ -25,7 +25,7 @@ function Topbar() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `search/users?query=${searchQuery}`
       );
       setSearchResults(response.data);

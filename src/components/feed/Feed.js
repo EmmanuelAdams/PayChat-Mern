@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import Post from '../post/Post';
 import Share from '../share/Share';
 import './feed.css';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { AuthContext } from '../../context/AuthContext';
 
 function Feed({ username }) {
@@ -13,8 +13,8 @@ function Feed({ username }) {
     const fetchPosts = async () => {
       try {
         const res = username
-          ? await axios.get(`/posts/profile/${username}`)
-          : await axios.get(`posts/timeline/${user._id}`);
+          ? await api.get(`/posts/profile/${username}`)
+          : await api.get(`posts/timeline/${user._id}`);
 
         if (Array.isArray(res.data)) {
           setPosts(

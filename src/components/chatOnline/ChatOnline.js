@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../apiConfig';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './chatOnline.css';
@@ -14,7 +14,7 @@ export default function ChatOnline({
 
   useEffect(() => {
     const getFriends = async () => {
-      const res = await axios.get(
+      const res = await api.get(
         '/users/friends/' + currentId
       );
       setFriends(res.data);
@@ -35,7 +35,7 @@ export default function ChatOnline({
 
   // const handleClick = async (user) => {
   //   try {
-  //     const res = await axios.get(
+  //     const res = await api.get(
   //       `/conversations/find/${currentId}/${user._id}`
   //     );
   //     setCurrentChat(res.data);

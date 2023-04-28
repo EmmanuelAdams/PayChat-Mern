@@ -7,7 +7,7 @@ import {
 import './post.css';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users/${post.userId}`, {
+      const res = await api.get(`/users/${post.userId}`, {
         cache: 'stale-while-revalidate',
       });
 
@@ -36,7 +36,7 @@ function Post({ post }) {
 
   const likeHandler = () => {
     try {
-      axios.put('/posts/' + post._id + '/like', {
+      api.put('/posts/' + post._id + '/like', {
         userId: currentUser._id,
       });
     } catch (error) {}
@@ -46,7 +46,7 @@ function Post({ post }) {
 
   const deletePost = async () => {
     try {
-      await axios.delete(`/posts/${post._id}`, {
+      await api.delete(`/posts/${post._id}`, {
         data: { userId: currentUser._id },
       });
       window.location.reload();

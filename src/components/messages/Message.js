@@ -2,7 +2,7 @@ import './message.css';
 import { format } from 'timeago.js';
 import { useState, useRef, useEffect } from 'react';
 import { Delete } from '@mui/icons-material';
-import axios from 'axios';
+import api from '../../apiConfig';
 
 export default function Message({
   message,
@@ -38,7 +38,7 @@ export default function Message({
 
   const handleDeleteMessage = async () => {
     try {
-      await axios.delete(`/messages/${message._id}`);
+      await api.delete(`/messages/${message._id}`);
       deleteMessage(message._id);
     } catch (error) {
       console.error(error);

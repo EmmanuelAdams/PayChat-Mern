@@ -1,7 +1,7 @@
 import './sidebar.css';
 import ChatOnline from '../chatOnline/ChatOnline';
 import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Add, Remove } from '@mui/icons-material';
@@ -18,7 +18,7 @@ function Sidebar({ user }) {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get(
+        const friendList = await api.get(
           `/users/friends/${user?._id}`
         );
         setFriends(friendList.data);
@@ -32,12 +32,12 @@ function Sidebar({ user }) {
   const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put(`/users/${user._id}/unfollow`, {
+        await api.put(`/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
         dispatch({ type: 'UNFOLLOW', payload: user._id });
       } else {
-        await axios.put(`/users/${user._id}/follow`, {
+        await api.put(`/users/${user._id}/follow`, {
           userId: currentUser._id,
         });
         dispatch({ type: 'FOLLOW', payload: user._id });

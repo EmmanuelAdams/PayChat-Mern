@@ -9,7 +9,7 @@ import {
 import { useContext, useRef, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import './share.css';
-import axios from 'axios';
+import api from '../../apiConfig';
 
 function Share() {
   const { user } = useContext(AuthContext);
@@ -33,14 +33,14 @@ function Share() {
       data.append('name', fileName);
       newPost.img = fileName;
       try {
-        await axios.post('/upload', data);
+        await api.post('/upload', data);
       } catch (error) {
         console.log(error);
       }
     }
 
     try {
-      await axios.post('/posts', newPost);
+      await api.post('/posts', newPost);
       window.location.reload();
     } catch (error) {}
   };
