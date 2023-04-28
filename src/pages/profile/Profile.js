@@ -3,7 +3,7 @@ import Feed from '../../components/feed/Feed';
 import Sidebar from '../../components/sidebar/Sidebar';
 import Topbar from '../../components/topbar/Topbar';
 import './profile.css';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { useParams } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -20,7 +20,7 @@ function Profile() {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append('profilePicture', file);
-      await axios.put(
+      await api.put(
         `/users/${user._id}/profilePicture`,
         formData
       );
@@ -36,7 +36,7 @@ function Profile() {
       });
 
       // Use stale-while-revalidate strategy to refresh the data
-      const res = await axios.get(
+      const res = await api.get(
         `/users?username=${username}`,
         { cache: 'stale-while-revalidate' }
       );
@@ -48,7 +48,7 @@ function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
+      const res = await api.get(
         `/users?username=${username}`,
         { cache: 'stale-while-revalidate' }
       );

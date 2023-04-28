@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { io } from 'socket.io-client';
 
 export default function Messenger() {
@@ -28,7 +28,9 @@ export default function Messenger() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    socketRef.current = io('ws://localhost:8900');
+    socketRef.current = io(
+      'https://paychat-websockets.onrender.com'
+    );
     socketRef.current.on('getMessage', (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -60,7 +62,7 @@ export default function Messenger() {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `/conversations/${user._id}`
         );
         setConversations(res.data);
@@ -74,7 +76,7 @@ export default function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `/messages/${currentChat?._id}`
         );
         setMessages(res.data);
@@ -104,7 +106,7 @@ export default function Messenger() {
     });
 
     try {
-      const res = await axios.post('/messages', message);
+      const res = await api.post('/messages', message);
       setMessages([...messages, res.data]);
       setNewMessage('');
     } catch (err) {

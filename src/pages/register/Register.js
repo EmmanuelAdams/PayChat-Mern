@@ -1,6 +1,6 @@
 import './register.css';
 import { useRef } from 'react';
-import axios from 'axios';
+import api from '../../apiConfig';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -26,7 +26,7 @@ function Register() {
         password: password.current.value,
       };
       try {
-        await axios.post('/auth/register', user);
+        await api.post('/auth/register', user);
         navigate('/login');
       } catch (error) {
         console.log(error);
