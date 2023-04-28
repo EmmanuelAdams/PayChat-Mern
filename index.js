@@ -9,6 +9,8 @@ const io = require('socket.io')(PORT, {
   },
 });
 
+console.log(`Socket.IO server listening on port ${PORT}`);
+
 let users = [];
 
 const addUser = (userId, socketId) => {
