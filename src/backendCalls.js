@@ -7,7 +7,7 @@ export const loginCall = async (
   dispatch({ type: 'LOGIN_START' });
   try {
     const res = await axios.post(
-      'auth/login',
+      'https://paychat-api.onrender.com/api/auth/login',
       userCredentials
     );
     dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
