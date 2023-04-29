@@ -53,3 +53,21 @@
 .profileRightBottom {
   display: flex;
 }
+
+@media screen and (max-width: 600px) {
+  .profileRight {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profileInfo {
+    order: 2;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .profileRightBottom {
+    order: 1;
+    width: 100%;
+  }
+}

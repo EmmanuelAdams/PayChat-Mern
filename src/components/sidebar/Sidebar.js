@@ -52,7 +52,7 @@ function Sidebar({ user }) {
         <div className="adContainer">
           <img
             className="sidebarAd"
-            src="assets/ad.jpg"
+            src="https://picsum.photos/300/400/?random"
             alt=""
           />
         </div>

@@ -28,52 +28,57 @@ function App() {
                 <Route
                   exact
                   path="/"
-                  element={
-                    user ? <Home /> : <Register />
-                  }></Route>
+                  element={user ? <Home /> : <Register />}
+                />
                 <Route
                   path="/profile/:username"
-                  element={<Profile />}></Route>
+                  element={<Profile />}
+                />
+                <Route
+                  path="/login"
+                  element={
+                    user ? <Navigate to="/" /> : <Login />
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    user ? (
+                      <Navigate to="/" />
+                    ) : (
+                      <Register />
+                    )
+                  }
+                />
+                <Route
+                  path="/messenger"
+                  element={
+                    !user ? (
+                      <Navigate to="/" /> || (
+                        <Navigate to="/messenger" />
+                      )
+                    ) : (
+                      <Messenger />
+                    )
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    !user ? (
+                      <Navigate to="/" /> || (
+                        <Navigate to="/settings" />
+                      )
+                    ) : (
+                      <SettingsPage />
+                    )
+                  }
+                />
               </Routes>
             </div>
           </Container>
         </div>
       </div>
-
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            user ? <Navigate to="/" /> : <Login />
-          }></Route>
-        <Route
-          path="/register"
-          element={
-            user ? <Navigate to="/" /> : <Register />
-          }></Route>
-        <Route
-          path="/messenger"
-          element={
-            !user ? (
-              <Navigate to="/" /> || (
-                <Navigate to="/messenger" />
-              )
-            ) : (
-              <Messenger />
-            )
-          }></Route>
-        <Route
-          path="/settings"
-          element={
-            !user ? (
-              <Navigate to="/" /> || (
-                <Navigate to="/settings" />
-              )
-            ) : (
-              <SettingsPage />
-            )
-          }></Route>
-      </Routes>
     </Router>
   );
 }

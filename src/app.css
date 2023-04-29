@@ -10,3 +10,68 @@
 .container {
   background-color: #fff;
 }
+
+@media screen and (max-width: 600px) {
+  .profileRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profileRightTop {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profileInfo {
+    text-align: center;
+  }
+
+  .profileRightBottom {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    order: -1;
+    margin-top: 20px;
+  }
+
+  .css-1oqqzyl-MuiContainer-root {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #root {
+    width: 400px;
+  }
+
+  .sidebar {
+    overflow-y: hidden;
+  }
+
+  .feedWrapper {
+    padding: 5px;
+    width: fit-content;
+  }
+
+  .sidebarAd {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    object-fit: scale-down;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .feed {
+    overflow-y: scroll;
+  }
+}

@@ -112,7 +112,10 @@ function Profile() {
           </div>
           <div className="profileRightBottom">
             <Feed username={username} />
-            <Sidebar user={user} />
+            <Sidebar
+              classname="sidebar-mobile"
+              user={user}
+            />
           </div>
         </div>
       </div>
