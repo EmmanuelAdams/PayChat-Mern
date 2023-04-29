@@ -10,6 +10,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Link,
 } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
@@ -17,8 +18,21 @@ import Messenger from './pages/messenger/Messenger';
 import SettingsPage from './pages/settingsPage/SettingsPage';
 import ErrorBoundary from './components/ErrorBoundary';
 
+function PageNotFound() {
+  return (
+    <div>
+      <h3>
+        Something went wrong while processing your
+        request...
+      </h3>
+      <Link to="/">Go home</Link>
+    </div>
+  );
+}
+
 function App() {
   const { user } = useContext(AuthContext);
+
   return (
     <Router>
       <div className="app">
@@ -38,14 +52,18 @@ function App() {
                 <Route
                   path="/login"
                   element={
-                    user ? <Navigate to="/" /> : <Login />
+                    user ? (
+                      <Navigate to="/" replace={true} />
+                    ) : (
+                      <Login />
+                    )
                   }
                 />
                 <Route
                   path="/register"
                   element={
                     user ? (
-                      <Navigate to="/" />
+                      <Navigate to="/" replace={true} />
                     ) : (
                       <Register />
                     )
@@ -55,9 +73,7 @@ function App() {
                   path="/messenger"
                   element={
                     !user ? (
-                      <Navigate to="/" /> || (
-                        <Navigate to="/messenger" />
-                      )
+                      <Navigate to="/" replace={true} />
                     ) : (
                       <Messenger />
                     )
@@ -67,9 +83,7 @@ function App() {
                   path="/settings"
                   element={
                     !user ? (
-                      <Navigate to="/" /> || (
-                        <Navigate to="/settings" />
-                      )
+                      <Navigate to="/" replace={true} />
                     ) : (
                       <SettingsPage />
                     )
@@ -77,7 +91,7 @@ function App() {
                 />
                 <Route
                   path="*"
-                  element={<Navigate to="/" />}
+                  element={<PageNotFound />}
                 />
               </Routes>
             </ErrorBoundary>
