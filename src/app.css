@@ -48,10 +48,6 @@
     padding-right: 0 !important;
   }
 
-  #root {
-    width: 400px;
-  }
-
   .sidebar {
     overflow-y: hidden;
   }

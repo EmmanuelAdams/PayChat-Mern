@@ -1,6 +1,6 @@
 .register {
   background-color: rgb(226, 226, 226);
-  padding-right: 100px;
+  padding: 30px;
   height: 100vh;
   display: flex;
   align-items: center;

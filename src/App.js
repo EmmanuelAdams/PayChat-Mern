@@ -15,15 +15,16 @@ import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Messenger from './pages/messenger/Messenger';
 import SettingsPage from './pages/settingsPage/SettingsPage';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const { user } = useContext(AuthContext);
   return (
     <Router>
       <div className="app">
-        <div className="new">
-          <Container>
-            <div className="container">
+        <Container>
+          <div className="container">
+            <ErrorBoundary>
               <Routes>
                 <Route
                   exact
@@ -74,10 +75,14 @@ function App() {
                     )
                   }
                 />
+                <Route
+                  path="*"
+                  element={<Navigate to="/" />}
+                />
               </Routes>
-            </div>
-          </Container>
-        </div>
+            </ErrorBoundary>
+          </div>
+        </Container>
       </div>
     </Router>
   );
