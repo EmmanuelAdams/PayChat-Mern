@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, CircularProgress } from '@mui/material';
 import Home from './pages/home/Home';
 import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
@@ -12,7 +12,7 @@ import {
   Navigate,
   Link,
 } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Messenger from './pages/messenger/Messenger';
 import SettingsPage from './pages/settingsPage/SettingsPage';
@@ -32,71 +32,82 @@ function PageNotFound() {
 
 function App() {
   const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000); // Simulate network delay
+  }, []);
 
   return (
     <Router>
       <div className="app">
-        <Container>
-          <div className="container">
-            <ErrorBoundary>
-              <Routes>
-                <Route
-                  exact
-                  path="/"
-                  element={user ? <Home /> : <Register />}
-                />
-                <Route
-                  path="/profile/:username"
-                  element={<Profile />}
-                />
-                <Route
-                  path="/login"
-                  element={
-                    user ? (
-                      <Navigate to="/" replace={true} />
-                    ) : (
-                      <Login />
-                    )
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    user ? (
-                      <Navigate to="/" replace={true} />
-                    ) : (
-                      <Register />
-                    )
-                  }
-                />
-                <Route
-                  path="/messenger"
-                  element={
-                    !user ? (
-                      <Navigate to="/" replace={true} />
-                    ) : (
-                      <Messenger />
-                    )
-                  }
-                />
-                <Route
-                  path="/settings"
-                  element={
-                    !user ? (
-                      <Navigate to="/" replace={true} />
-                    ) : (
-                      <SettingsPage />
-                    )
-                  }
-                />
-                <Route
-                  path="*"
-                  element={<PageNotFound />}
-                />
-              </Routes>
-            </ErrorBoundary>
+        {loading ? (
+          <div className="loading">
+            <CircularProgress />
           </div>
-        </Container>
+        ) : (
+          <Container>
+            <div className="container">
+              <ErrorBoundary>
+                <Routes>
+                  <Route
+                    exact
+                    path="/"
+                    element={user ? <Home /> : <Register />}
+                  />
+                  <Route
+                    path="/profile/:username"
+                    element={<Profile />}
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      user ? (
+                        <Navigate to="/" replace={true} />
+                      ) : (
+                        <Login />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      user ? (
+                        <Navigate to="/" replace={true} />
+                      ) : (
+                        <Register />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/messenger"
+                    element={
+                      !user ? (
+                        <Navigate to="/" replace={true} />
+                      ) : (
+                        <Messenger />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/settings"
+                    element={
+                      !user ? (
+                        <Navigate to="/" replace={true} />
+                      ) : (
+                        <SettingsPage />
+                      )
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={<PageNotFound />}
+                  />
+                </Routes>
+              </ErrorBoundary>
+            </div>
+          </Container>
+        )}
       </div>
     </Router>
   );

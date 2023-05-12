@@ -11,6 +11,13 @@
   background-color: #fff;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 @media screen and (max-width: 600px) {
   .profileRight {
     display: flex;
