@@ -5,22 +5,42 @@ const multer = require('multer');
 
 // Update user
 router.put('/:id/update', async (req, res) => {
-  // const currentUserID = req.query.userId;
   const requestedUserID = req.params.id;
+  const currentUserID = req.query.userId;
 
-  // if (currentUserID !== requestedUserID) {
-  //   return res
-  //     .status(401)
-  //     .json(
-  //       'You are not authorized to update this account!'
-  //     );
-  // }
+  if (currentUserID !== requestedUserID) {
+    return res
+      .status(401)
+      .json(
+        'You are not authorized to update this account!'
+      );
+  }
 
   try {
     const user = await User.findById(requestedUserID);
 
     if (!user) {
       return res.status(404).json('User not found!');
+    }
+
+    const currentDate = new Date();
+    const lastUsernameChangeDate =
+      user.lastUsernameChangeDate
+        ? new Date(user.lastUsernameChangeDate)
+        : new Date(0);
+    const daysSinceLastChange = Math.floor(
+      (currentDate - lastUsernameChangeDate) /
+        (1000 * 60 * 60 * 24)
+    );
+
+    if (daysSinceLastChange < 60) {
+      return res
+        .status(400)
+        .json(
+          `You can only change your username after ${
+            60 - daysSinceLastChange
+          } days.`
+        );
     }
 
     if (req.body.password) {
@@ -33,7 +53,10 @@ router.put('/:id/update', async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       requestedUserID,
-      req.body,
+      {
+        ...req.body,
+        lastUsernameChangeDate: currentDate.toISOString(),
+      },
       { new: true }
     );
 
