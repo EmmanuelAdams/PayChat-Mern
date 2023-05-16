@@ -43,10 +43,10 @@ app.use(
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
-app.use(function (req, res, next) {
+pp.use(function (req, res, next) {
   res.header(
     'Access-Control-Allow-Origin',
-    'http://localhost:3000'
+    JSON.stringify(process.env.CORS_FRONTEND)
   );
   res.header(
     'Access-Control-Allow-Methods',
