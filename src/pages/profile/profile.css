@@ -42,8 +42,29 @@
   justify-content: center;
 }
 
+.edit {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.editIcon {
+  cursor: pointer;
+  margin-top: 2.5px;
+}
+
+.editSaveOption {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.editCancelOption {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
 .profileInfoName {
   font-size: 24px;
+  margin-right: 10px;
 }
 
 .profileInfoDesc {

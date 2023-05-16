@@ -62,6 +62,16 @@
   font-weight: 300;
 }
 
+.editSaveOption {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.editCancelOption {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
 .sidebarFollowings {
   display: flex;
   flex-wrap: wrap;

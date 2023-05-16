@@ -134,18 +134,3 @@
 .icon {
   font-size: 30px !important;
 }
-
-.topbarIconBadge {
-  width: 15px;
-  height: 15px;
-  background-color: red;
-  border-radius: 50%;
-  color: #fff;
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-}

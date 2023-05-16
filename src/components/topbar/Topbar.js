@@ -140,7 +140,6 @@ function Topbar() {
                   className="icon"
                   titleAccess="Messenger"
                 />
-                <span className="topbarIconBadge">1</span>
               </div>
             </IconButton>
           </Link>
@@ -150,7 +149,6 @@ function Topbar() {
                 className="icon"
                 titleAccess="Notifications"
               />
-              <span className="topbarIconBadge">2</span>
             </div>
           </IconButton>
           <Link to={'/settings'}>
