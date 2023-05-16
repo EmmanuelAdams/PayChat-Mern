@@ -43,7 +43,7 @@ app.use(
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
-pp.use(function (req, res, next) {
+app.use(function (req, res, next) {
   res.header(
     'Access-Control-Allow-Origin',
     JSON.stringify(process.env.CORS_FRONTEND)
