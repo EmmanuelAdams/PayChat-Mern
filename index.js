@@ -46,7 +46,7 @@ app.use(morgan('common'));
 app.use(function (req, res, next) {
   res.header(
     'Access-Control-Allow-Origin',
-    JSON.stringify(process.env.CORS_FRONTEND)
+    process.env.CORS_FRONTEND
   );
   res.header(
     'Access-Control-Allow-Methods',
