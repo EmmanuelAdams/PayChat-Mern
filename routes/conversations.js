@@ -47,4 +47,22 @@ router.get(
   }
 );
 
+// get messages in a conversation
+router.get(
+  '/messages/:conversationId',
+  async (req, res) => {
+    try {
+      const conversation = await Conversation.findById(
+        req.params.conversationId
+      )
+        .populate('messages')
+        .exec();
+
+      res.status(200).json(conversation.messages);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
 module.exports = router;
