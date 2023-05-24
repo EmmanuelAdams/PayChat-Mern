@@ -4,7 +4,8 @@
 }
 
 .chatMenu {
-  flex: 3.5;
+  flex: 1;
+  max-width: 100%;
 }
 
 .chatMenuInput {
@@ -16,7 +17,8 @@
 }
 
 .chatBox {
-  flex: 5.5;
+  flex: 1;
+  max-width: 100%;
 }
 
 .chatBoxWrapper {
@@ -55,7 +57,7 @@
 }
 
 .chatOnline {
-  flex: 3;
+  flex: 0.5;
 }
 
 .chatMenuWrapper,
@@ -68,7 +70,19 @@
 .noConversationText {
   position: absolute;
   top: 10%;
-  font-size: 50px;
+  font-size: 40px;
   color: rgb(224, 220, 220);
   cursor: default;
+}
+
+@media screen and (max-width: 500px) {
+  .chatMenu,
+  .chatBox {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .chatOnline {
+    display: none;
+  }
 }

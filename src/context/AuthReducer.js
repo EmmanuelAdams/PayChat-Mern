@@ -23,8 +23,8 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          following: [
-            ...state.user.following,
+          followings: [
+            ...state.user.followings,
             action.payload,
           ],
         },
@@ -34,7 +34,7 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          following: state.user.following.filter(
+          followings: state.user.followings.filter(
             (userId) => userId !== action.payload
           ),
         },

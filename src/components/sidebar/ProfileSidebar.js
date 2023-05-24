@@ -1,7 +1,11 @@
 import './sidebar.css';
 import { useContext, useEffect, useState } from 'react';
 import api from '../../apiConfig';
-import { Link, useParams } from 'react-router-dom';
+import {
+  Link,
+  useParams,
+  useNavigate,
+} from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Add, Remove } from '@mui/icons-material';
 
@@ -10,22 +14,21 @@ function ProfileSidebar({ user }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } =
     useContext(AuthContext);
-  const [followed, setFollowed] = useState(
-    currentUser.followings?.includes(user?.id)
-  );
   const [updatedUsers, setUpdatedUsers] = useState({});
   const username = useParams().username;
   const [isEditing, setIsEditing] = useState(false);
   const [newCity, setNewCity] = useState('');
+  const [isFollowing, setIsFollowing] = useState(false);
   const [newFrom, setNewFrom] = useState('');
   const [newRelationship, setNewRelationship] =
     useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getFriends = async () => {
       try {
         const friendList = await api.get(
-          `/users/friends/${user?._id}`
+          `/users/friends/${currentUser?._id}`
         );
         setFriends(friendList.data);
       } catch (err) {
@@ -33,7 +36,7 @@ function ProfileSidebar({ user }) {
       }
     };
     getFriends();
-  }, [user?._id]);
+  }, [currentUser?._id]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,17 +46,20 @@ function ProfileSidebar({ user }) {
           { cache: 'stale-while-revalidate' }
         );
         setUpdatedUsers(res.data);
+        setIsFollowing(
+          currentUser.followings?.includes(res.data._id)
+        );
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchUser();
-  }, [username]);
+  }, [currentUser?.followings, username]);
 
   const handleClick = async () => {
     try {
-      if (followed) {
+      if (isFollowing) {
         await api.put(`/users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
@@ -64,8 +70,18 @@ function ProfileSidebar({ user }) {
         });
         dispatch({ type: 'FOLLOW', payload: user._id });
       }
-      setFollowed(!followed);
-    } catch (err) {}
+
+      const res = await api.get(
+        `/users?username=${username}`,
+        { cache: 'stale-while-revalidate' }
+      );
+      setUpdatedUsers(res.data);
+      setIsFollowing(
+        currentUser.followings?.includes(res.data._id)
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleEditClick = () => {
@@ -111,6 +127,39 @@ function ProfileSidebar({ user }) {
     }
   };
 
+  const handleChatClick = async () => {
+    try {
+      const response = await api.get(
+        '/conversations/find/' +
+          currentUser._id +
+          '/' +
+          user._id
+      );
+      const existingConversation = response.data;
+
+      if (existingConversation) {
+        // Redirect to the existing conversation
+        navigate(
+          `/conversation/${existingConversation._id}`
+        );
+      } else {
+        // Create a new conversation
+        const newConversation = await api.post(
+          '/conversations',
+          {
+            senderId: currentUser._id,
+            receiverId: user._id,
+          }
+        );
+        const conversationId = newConversation.data._id;
+        navigate(`/conversation/${conversationId}`);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleCancelClick = () => {
     setIsEditing(false);
     setNewCity(updatedUsers.city);
@@ -120,14 +169,31 @@ function ProfileSidebar({ user }) {
 
   return (
     <>
-      {user.username !== currentUser.username && (
-        <button
-          className="sidebarFollowButton"
-          onClick={handleClick}>
-          {followed ? 'unfollow' : 'Follow'}
-          {followed ? <Remove /> : <Add />}
-        </button>
-      )}
+      <div className="followChat">
+        <div>
+          {user.username !== currentUser.username && (
+            <button
+              className="sidebarFollowButton"
+              onClick={handleClick}>
+              {isFollowing ? 'unfollow' : 'Follow'}
+              {isFollowing ? <Remove /> : <Add />}
+            </button>
+          )}
+        </div>
+        <div>
+          {isFollowing && (
+            <div>
+              <Link
+                to={`/conversation/${user._id}`}
+                className="sidebarChatButton"
+                onClick={handleChatClick}>
+                Chat Friend
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+
       <h4 className="sidebarTitle">User information</h4>
       <div className="sidebarInfo">
         {isEditing ? (
@@ -155,6 +221,7 @@ function ProfileSidebar({ user }) {
                 Relationship:
               </span>
               <select
+                className="relationshipOptions"
                 name="newRelationship"
                 value={newRelationship}
                 onChange={handleInputChange}>
@@ -241,4 +308,5 @@ function ProfileSidebar({ user }) {
     </>
   );
 }
+
 export default ProfileSidebar;

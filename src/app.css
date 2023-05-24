@@ -45,9 +45,15 @@
     align-items: center;
   }
 
+  .feed {
+    flex: 0;
+  }
+
   .sidebar {
     order: -1;
     margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .css-1oqqzyl-MuiContainer-root {

@@ -80,6 +80,16 @@ function App() {
                     }
                   />
                   <Route
+                    path="/conversation/:conversationId"
+                    element={
+                      !user ? (
+                        <Navigate to="/" replace={true} />
+                      ) : (
+                        <Messenger />
+                      )
+                    }
+                  />
+                  <Route
                     path="/messenger"
                     element={
                       !user ? (

@@ -11,7 +11,9 @@ import {
 } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import api from '../../apiConfig';
+import SendIcon from '@mui/icons-material/Send';
 import { io } from 'socket.io-client';
+import { useParams } from 'react-router-dom';
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
@@ -26,6 +28,7 @@ export default function Messenger() {
     useState(null);
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
+  const { conversationId } = useParams();
 
   useEffect(() => {
     socketRef.current = io(
@@ -87,11 +90,38 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }, [messages]);
+
+  useEffect(() => {
+    const selectedConversation = conversations.find(
+      (conversation) => conversation._id === conversationId
+    );
+
+    if (selectedConversation) {
+      setCurrentChat(selectedConversation);
+      setSelectedConversation(selectedConversation._id);
+    }
+  }, [conversations, conversationId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (newMessage.trim() === '') {
+      return;
+    }
+
+    let formattedMessage = newMessage.replace(
+      /(\d+\.\s+)/g,
+      '\n$1'
+    );
+
     const message = {
       sender: user._id,
-      text: newMessage,
+      text: formattedMessage,
       conversationId: currentChat._id,
     };
 
@@ -102,7 +132,7 @@ export default function Messenger() {
     socketRef.current.emit('sendMessage', {
       senderId: user._id,
       receiverId,
-      text: newMessage,
+      text: formattedMessage,
     });
 
     try {
@@ -122,12 +152,6 @@ export default function Messenger() {
     );
   };
 
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({
-      behavior: 'smooth',
-    });
-  }, [messages]);
-
   return (
     <>
       <Topbar />
@@ -140,11 +164,13 @@ export default function Messenger() {
             />
             {conversations.map((c) => (
               <div
+                key={c._id}
                 onClick={() => {
                   setCurrentChat(c);
                   setSelectedConversation(c._id);
                 }}>
                 <Conversation
+                  key={c._id}
                   conversation={c}
                   currentUser={user}
                   selected={selectedConversation === c._id}
@@ -159,7 +185,7 @@ export default function Messenger() {
               <>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
-                    <div ref={scrollRef}>
+                    <div key={m._id} ref={scrollRef}>
                       <Message
                         key={m._id}
                         message={m}
@@ -189,7 +215,7 @@ export default function Messenger() {
                   <button
                     className="chatSubmitButton"
                     onClick={handleSubmit}>
-                    Send
+                    <SendIcon />
                   </button>
                 </div>
               </>
@@ -202,6 +228,7 @@ export default function Messenger() {
         </div>
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
+            <span>Online Users</span>
             <ChatOnline
               onlineUsers={onlineUsers}
               currentId={user._id}
