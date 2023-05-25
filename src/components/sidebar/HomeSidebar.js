@@ -3,7 +3,7 @@ import ChatOnline from '../chatOnline/ChatOnline';
 
 function HomeSidebar() {
   return (
-    <>
+    <div className="homeSidebar">
       <div className="adContainer">
         <img
           className="sidebarAd"
@@ -15,7 +15,7 @@ function HomeSidebar() {
       <ul className="sidebarFriendList">
         <ChatOnline />
       </ul>
-    </>
+    </div>
   );
 }
 

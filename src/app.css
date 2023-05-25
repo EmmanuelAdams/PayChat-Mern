@@ -1,5 +1,6 @@
 .app {
   background-color: rgb(226, 226, 226);
+  width: fit-content;
 }
 
 * {
@@ -19,6 +20,41 @@
 }
 
 @media screen and (max-width: 600px) {
+  .app {
+    height: 100%;
+    width: 100%;
+  }
+
+  .topbarContainer {
+    display: contents;
+  }
+
+  .topbarCenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  .searchbar {
+    width: 90%;
+  }
+
+  .shareInput {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .searchInput {
+    font-size: 12px;
+  }
+
   .profileRight {
     display: flex;
     flex-direction: column;
@@ -30,7 +66,6 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 
   .profileInfo {
@@ -45,8 +80,18 @@
     align-items: center;
   }
 
+  .post {
+    margin-left: 10px;
+    width: 100%;
+  }
+
+  .share {
+    margin-left: 10px;
+    width: 100%;
+  }
+
   .feed {
-    flex: 0;
+    flex: inherit;
   }
 
   .sidebar {
@@ -68,6 +113,7 @@
   .feedWrapper {
     padding: 5px;
     width: fit-content;
+    margin-right: 15px;
   }
 
   .sidebarAd {
@@ -76,6 +122,11 @@
     border-radius: 10px;
     margin-bottom: 30px;
     object-fit: scale-down;
+  }
+
+  .homeSidebar {
+    display: none;
+    flex: 0;
   }
 }
 
