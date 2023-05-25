@@ -138,6 +138,20 @@ app.use('/api/conversations', conversationRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/search', searchRoute);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  // Set the status code
+  res.status(err.statusCode || 500);
+
+  // Set the content type to JSON
+  res.setHeader('Content-Type', 'application/json');
+
+  // Send the error message as JSON
+  res.json({
+    message: err.message || 'Internal Server Error',
+  });
+});
+
 // Start the server
 const PORT =
   process.env.NODE_ENV === 'test'
