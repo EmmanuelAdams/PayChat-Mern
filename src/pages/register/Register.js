@@ -1,7 +1,9 @@
 import './register.css';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import api from '../../apiConfig';
 import { Link, useNavigate } from 'react-router-dom';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function Register() {
   const username = useRef();
@@ -9,6 +11,7 @@ function Register() {
   const password = useRef();
   const confirmPassword = useRef();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -60,14 +63,31 @@ function Register() {
             ref={email}
             className="registerInput"
           />
-          <input
-            type="password"
-            minLength={6}
-            required
-            placeholder="Password"
-            ref={password}
-            className="registerInput"
-          />
+          <div className="passwordInputContainer">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              minLength={6}
+              required
+              placeholder="Password"
+              ref={password}
+              className="registerInput"
+            />
+            {showPassword ? (
+              <VisibilityIcon
+                className="passwordVisibilityIcon"
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
+              />
+            ) : (
+              <VisibilityOffIcon
+                className="passwordVisibilityIcon"
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
+              />
+            )}
+          </div>
           <input
             type="password"
             required

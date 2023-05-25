@@ -12,6 +12,13 @@ export const loginCall = async (
     );
     dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
   } catch (error) {
-    dispatch({ type: 'LOGIN_FAILURE', payload: error });
+    dispatch({ type: 'LOGIN_FAILURE' });
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error(
+        'An error occurred. Please try again later.'
+      );
+    }
   }
 };

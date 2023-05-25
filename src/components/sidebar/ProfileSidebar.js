@@ -28,7 +28,7 @@ function ProfileSidebar({ user }) {
     const getFriends = async () => {
       try {
         const friendList = await api.get(
-          `/users/friends/${currentUser?._id}`
+          `/users/friends/${user?._id}`
         );
         setFriends(friendList.data);
       } catch (err) {
@@ -36,7 +36,7 @@ function ProfileSidebar({ user }) {
       }
     };
     getFriends();
-  }, [currentUser?._id]);
+  }, [user?._id]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -121,6 +121,7 @@ function ProfileSidebar({ user }) {
         payload: updatedUser,
       });
 
+      window.location.reload();
       setIsEditing(false);
     } catch (err) {
       console.log(err);
@@ -245,13 +246,13 @@ function ProfileSidebar({ user }) {
             <div className="sidebarInfoItem">
               <span className="sidebarInfoKey">City:</span>
               <span className="sidebarInfoValue">
-                {currentUser.city}
+                {user.city}
               </span>
             </div>
             <div className="sidebarInfoItem">
               <span className="sidebarInfoKey">From:</span>
               <span className="sidebarInfoValue">
-                {currentUser.from}
+                {user.from}
               </span>
             </div>
             <div className="sidebarInfoItem">
@@ -259,11 +260,11 @@ function ProfileSidebar({ user }) {
                 Relationship:
               </span>
               <span className="sidebarInfoValue">
-                {currentUser.relationship === 'Single'
+                {user.relationship === 'Single'
                   ? 'Single'
-                  : currentUser.relationship === 'Married'
+                  : user.relationship === 'Married'
                   ? 'Married'
-                  : '-'}
+                  : 'Single'}
               </span>
             </div>
             {!isEditing &&

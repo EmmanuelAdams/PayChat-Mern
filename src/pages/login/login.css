@@ -37,6 +37,7 @@
   outline: none;
   font-size: medium;
   padding-left: 15px;
+  width: 100%;
 }
 
 .loginButton {
@@ -57,4 +58,22 @@
 .loginForgot {
   text-align: center;
   color: #274d61;
+}
+
+.passwordInputContainer {
+  position: relative;
+}
+
+.passwordVisibilityIcon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.loginError {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }

@@ -231,7 +231,7 @@ export default function Messenger() {
             <span>Online Users</span>
             <ChatOnline
               onlineUsers={onlineUsers}
-              currentId={user._id}
+              currentId={user?._id}
               setCurrentChat={setCurrentChat}
             />
           </div>

@@ -11,6 +11,7 @@ import {
   Route,
   Navigate,
   Link,
+  useNavigate,
 } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from './context/AuthContext';
@@ -19,13 +20,22 @@ import SettingsPage from './pages/settingsPage/SettingsPage';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function PageNotFound() {
+  let navigate = useNavigate();
+
+  function changeLocation(redirect) {
+    navigate(redirect, { replace: true });
+    window.location.reload();
+  }
+
   return (
     <div>
       <h3>
         Something went wrong while processing your
         request...
       </h3>
-      <Link to="/">Go home</Link>
+      <Link replace="/" onClick={() => changeLocation('/')}>
+        Go home
+      </Link>
     </div>
   );
 }

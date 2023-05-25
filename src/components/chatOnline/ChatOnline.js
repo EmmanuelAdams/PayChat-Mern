@@ -14,12 +14,15 @@ export default function ChatOnline({
 
   useEffect(() => {
     const getFriends = async () => {
-      const res = await api.get(
-        '/users/friends/' + currentId
-      );
-      setFriends(res.data);
+      try {
+        const res = await api.get(
+          `/users/friends/${currentId}`
+        );
+        setFriends(res.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-
     getFriends();
   }, [currentId]);
 

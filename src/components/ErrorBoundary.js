@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 
 class ErrorBoundary extends Component {
@@ -19,7 +19,7 @@ class ErrorBoundary extends Component {
     );
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     if (this.state.hasError) {
       setTimeout(
         () => this.setState({ redirect: true }),
@@ -30,15 +30,19 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Navigate to="/" />;
+      return <Navigate replace="/" />;
     }
 
     if (this.state.hasError) {
       return (
         <h2>
           This listing has an error.{' '}
-          <Link to="/">Click here</Link> to go back to the
-          home page or wait five seconds.
+          <Link
+            to="/"
+            onClick={() => window.location.reload()}>
+            Click here
+          </Link>{' '}
+          if nothing happens after five seconds.
         </h2>
       );
     }
