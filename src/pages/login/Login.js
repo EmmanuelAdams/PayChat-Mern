@@ -29,7 +29,7 @@ function Login() {
         dispatch
       );
     } catch (err) {
-      console.log(err); // Log the entire error object
+      console.log(err);
       setError(err.message);
     }
   };
