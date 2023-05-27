@@ -40,10 +40,7 @@ app.use(
 );
 
 app.use('/images', (req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin',
-    process.env.CORS_FRONTEND
-  );
+  res.header('Access-Control-Allow-Origin', '*');
   next();
 });
 
