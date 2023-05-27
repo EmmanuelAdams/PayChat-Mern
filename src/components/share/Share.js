@@ -131,7 +131,10 @@ function Share() {
               </span>
             </div>
 
-            <button className="shareOption" type="submit">
+            <button
+              id="shareButton"
+              className="shareOption"
+              type="submit">
               <Reply className="replyIcon" />
               <span className="shareOptionText">Post</span>
             </button>
