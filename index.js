@@ -39,6 +39,14 @@ app.use(
   express.static(path.join(__dirname, 'public/images'))
 );
 
+app.use('/images', (req, res, next) => {
+  res.header(
+    'Access-Control-Allow-Origin',
+    process.env.CORS_FRONTEND
+  );
+  next();
+});
+
 // Middleware
 app.use(express.json());
 app.use(helmet());
@@ -65,7 +73,6 @@ const storage = multer.diskStorage({
     cb(null, 'public/images');
   },
   filename: (req, file, cb) => {
-    // Generate a unique file name by adding a timestamp to the original file name
     const uniqueSuffix =
       Date.now() + '-' + Math.round(Math.random() * 1e9);
     const extension = path.extname(file.originalname);
@@ -140,13 +147,10 @@ app.use('/api/search', searchRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  // Set the status code
   res.status(err.statusCode || 500);
 
-  // Set the content type to JSON
   res.setHeader('Content-Type', 'application/json');
 
-  // Send the error message as JSON
   res.json({
     message: err.message || 'Internal Server Error',
   });
