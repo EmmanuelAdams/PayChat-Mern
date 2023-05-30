@@ -44,9 +44,7 @@ function Profile() {
       // Use stale-while-revalidate strategy to refresh the data
       const res = await api.get(
         `/users?username=${username}`,
-        {
-          cache: 'stale-while-revalidate',
-        }
+        { cache: 'stale-while-revalidate' }
       );
       setUser(res.data);
     } catch (err) {
@@ -59,9 +57,7 @@ function Profile() {
       try {
         const res = await api.get(
           `/users?username=${username}`,
-          {
-            cache: 'stale-while-revalidate',
-          }
+          { cache: 'stale-while-revalidate' }
         );
         setUser(res.data);
         setIsLoading(false);
@@ -105,35 +101,6 @@ function Profile() {
     setIsEditing(false);
     setNewUsername(user.username);
   };
-
-  const getProfilePictureInput = () => {
-    // Check if the device supports file input (Android/iOS)
-    if (
-      window.File &&
-      window.FileReader &&
-      window.FileList &&
-      window.Blob
-    ) {
-      // Create a file input element
-      const fileInput = document.createElement('input');
-      fileInput.setAttribute('type', 'file');
-      fileInput.setAttribute('accept', '.png,.jpg,.jpeg');
-      fileInput.addEventListener(
-        'change',
-        handleProfilePictureUpload
-      );
-
-      // Trigger file input click programmatically
-      fileInput.click();
-    } else {
-      // File input not supported, fallback to the default behavior
-      const profilePictureInput = document.getElementById(
-        'profilePictureInput'
-      );
-      profilePictureInput.click();
-    }
-  };
-
   return (
     <>
       <Topbar />
@@ -155,9 +122,7 @@ function Profile() {
                     alt=""
                   />
 
-                  <div
-                    className="profilePictureOverlay"
-                    onClick={getProfilePictureInput}>
+                  <div className="profilePictureOverlay">
                     <label htmlFor="profilePictureInput">
                       <div className="profileUserImgWrapper">
                         <img
@@ -176,11 +141,11 @@ function Profile() {
                       id="profilePictureInput"
                       type="file"
                       accept=".png,.jpg,.jpeg"
+                      onChange={handleProfilePictureUpload}
                       style={{ display: 'none' }}
                       disabled={
                         user._id !== contextUser._id
                       }
-                      onChange={handleProfilePictureUpload}
                     />
                   </div>
                 </div>
